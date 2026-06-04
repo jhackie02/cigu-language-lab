@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cigu Elementary School - Magical Language Lab / 七股國小魔法語文實驗室</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Yusei Magic & Balsamiq Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Yusei+Magic&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons for Fantasy Elements -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .font-magic {
+            font-family: 'Yusei Magic', 'Comic Sans MS', cursive, sans-serif;
+        }
+        .font-practice {
+            font-family: 'Balsamiq Sans', 'Comic Sans MS', sans-serif;
+            letter-spacing: 0.08em;
+        }
+        .font-standard {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: radial-gradient(circle at center, #1b0c30, #080314);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* Magical animated elements */
+        @keyframes star-twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.15); }
+        }
+        @keyframes magic-float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(1deg); }
+        }
+        @keyframes wheel-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .animate-magic-float {
+            animation: magic-float 4s ease-in-out infinite;
+        }
+        .animate-star-twinkle {
+            animation: star-twinkle 3s ease-in-out infinite;
+        }
+        .animate-wheel-spin {
+            animation: wheel-spin 30s linear infinite;
+        }
+
+        /* Landscape-oriented custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0521;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #eab308;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #facc15;
+        }
+    </style>
+</head>
+<body class="text-white flex flex-col font-standard relative min-h-screen justify-between">
+
+    <!-- Sparkle background overlay elements -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute top-6 left-12 text-yellow-400 opacity-20 animate-star-twinkle" style="animation-delay: 0s;"><i class="fa-solid fa-wand-magic-sparkles text-3xl"></i></div>
+        <div class="absolute top-1/4 right-12 text-purple-400 opacity-20 animate-star-twinkle" style="animation-delay: 0.7s;"><i class="fa-solid fa-star text-2xl"></i></div>
+        <div class="absolute bottom-12 left-1/4 text-pink-400 opacity-15 animate-star-twinkle" style="animation-delay: 1.2s;"><i class="fa-solid fa-moon text-4xl animate-magic-float"></i></div>
+        <div class="absolute top-2/3 right-1/4 text-yellow-300 opacity-15 animate-star-twinkle" style="animation-delay: 1.8s;"><i class="fa-solid fa-cloud text-3xl animate-magic-float"></i></div>
+    </div>
+
+    <!-- GLOBAL HEADER STATUS BAR -->
+    <header class="flex flex-row justify-between items-center gap-4 border-b border-purple-900/40 pb-2 mb-3 px-6 py-3 bg-black/30 backdrop-blur-md z-10 relative">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="navigateToClassSelect()">
+            <div class="bg-gradient-to-tr from-yellow-500 to-purple-600 p-2 rounded-xl shadow border border-yellow-400 animate-magic-float">
+                <i class="fa-solid fa-dragon text-xl text-white"></i>
+            </div>
+            <div>
+                <h1 class="text-lg md:text-xl font-magic bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400 leading-tight">
+                    Cigu Elementary School Magical Language Lab
+                </h1>
+                <p class="text-[10px] text-purple-300 font-magic uppercase tracking-wider">七股國小魔法語文實驗室</p>
+            </div>
+        </div>
+
+        <!-- Header Badges & Actions -->
+        <div class="flex items-center gap-2">
+            <div id="mic-status-badge" class="px-3 py-1 rounded-full text-[10px] font-magic border transition-all duration-300 bg-red-950/50 text-red-400 border-red-500/30">
+                <i class="fa-solid fa-microphone-slash mr-1"></i> Mic Offline / 麥克風未開啟
+            </div>
+            
+            <div id="user-display-container" class="hidden flex items-center gap-2">
+                <div id="user-display-badge" class="px-3 py-1 rounded-full text-[10px] font-magic bg-purple-950/60 text-yellow-300 border border-purple-500/30">
+                    <i class="fa-solid fa-hat-wizard mr-1"></i> <span id="current-user-text">Adventurer</span>
+                </div>
+                <!-- Main Menu Button -->
+                <button id="header-btn-main-menu" onclick="navigateToClassSelect()" class="px-3 py-1 rounded-full text-[10px] font-magic bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white border border-pink-400/40 transition-all font-bold shadow shadow-pink-500/25 flex items-center gap-1">
+                    <i class="fa-solid fa-house-chimney"></i>
+                    <span>Main Page / 回班級選單</span>
+                </button>
+            </div>
+            
+            <!-- TEACHER PANEL ACCESS -->
+            <button id="header-btn-teacher-panel" onclick="openPinModal()" class="px-3 py-1 rounded-full text-[10px] font-magic bg-yellow-500 hover:bg-yellow-400 text-slate-950 border border-yellow-300 transition-all font-bold shadow shadow-yellow-500/20">
+                <i class="fa-solid fa-gear mr-1"></i> Teacher Panel / 教師管理
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="flex-grow z-10 flex flex-col w-full max-w-7xl mx-auto px-6 py-2 justify-center">
+
+        <!-- SCREEN CONTAINER (Landscape Split Layouts) -->
+        <div id="screen-viewport" class="flex-grow flex flex-col justify-center items-center w-full min-h-[460px]">
+            
+            <!-- SCREEN 1: SPLASH & MIC WELCOME SCREEN -->
+            <section id="screen-splash" class="w-full max-w-4xl bg-indigo-950/30 backdrop-blur-md rounded-2xl p-6 border border-purple-500/20 shadow-2xl flex flex-row items-center justify-between gap-8 animate-magic-float">
+                <div class="w-1/2 flex flex-col items-center justify-center text-center">
+                    <div class="relative w-36 h-36 mb-3 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-full blur-xl opacity-40 animate-star-twinkle"></div>
+                        <div class="absolute inset-0 border-2 border-dashed border-yellow-300/30 rounded-full animate-wheel-spin"></div>
+                        <i class="fa-solid fa-fort-awesome text-6xl text-yellow-300 relative z-10"></i>
+                    </div>
+                    <h2 class="text-2xl font-magic text-yellow-300 tracking-wide">
+                        Cigu Elementary School Language Lab
+                    </h2>
+                    <p class="text-xs text-purple-300 font-magic">七股國小魔法語文實驗室</p>
+                </div>
+
+                <div class="w-1/2 flex flex-col justify-center gap-4 border-l border-purple-900/40 pl-8">
+                    <div>
+                        <h3 class="text-lg font-magic text-white">Enter the Magic Academy! / 進入魔法學院！</h3>
+                        <p class="text-xs text-purple-300 font-magic mt-1">Please configure your magical speaking tool to cast vocal spells.</p>
+                        <p class="text-[11px] text-yellow-400 font-magic italic">請先啟用麥克風語音魔法才能進入學習。</p>
+                    </div>
+
+                    <div class="bg-purple-950/60 p-3 rounded-xl border border-purple-500/20">
+                        <p class="text-[10px] text-purple-300 font-magic uppercase">System Check / 系統檢查</p>
+                        <div id="splash-mic-status" class="flex items-center gap-2 mt-1 text-xs font-magic text-red-400">
+                            <i class="fa-solid fa-circle-exclamation text-base"></i>
+                            <span>Microphone Permission Required / 需取得麥克風授權</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <button id="btn-request-mic" onclick="requestMicPermission()" class="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-purple-950 font-magic py-3 px-6 rounded-xl font-bold shadow-lg shadow-amber-500/10 border-b-2 border-amber-700 active:translate-y-0.5 transition-all text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Grant Magical Mic / 授予麥克風權限
+                        </button>
+                        <button id="btn-enter-lab" disabled onclick="transitionTo('screen-class-select')" class="w-full bg-slate-800 text-slate-500 cursor-not-allowed font-magic py-3 px-6 rounded-xl text-sm flex items-center justify-center gap-2 border-b-2 border-slate-900">
+                            <i class="fa-solid fa-lock"></i> Enter Magic School / 進入魔法學校
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 2: SELECT CLASS (MAIN PAGE) -->
+            <section id="screen-class-select" class="hidden w-full max-w-5xl flex flex-col gap-4 text-center">
+                <div>
+                    <h2 class="text-2xl font-magic text-yellow-300 tracking-wide drop-shadow">✨ Select Your Class Guild / 選擇你的班級公會</h2>
+                    <p class="text-xs text-purple-300 font-magic">Pick your guild card to find your wizard identity / 請選擇班級卡牌登入</p>
+                </div>
+
+                <div class="flex flex-col gap-4 py-2 max-w-4xl mx-auto w-full">
+                    <!-- Row 1: Class 1-3 -->
+                    <div class="flex flex-col gap-1 text-left bg-purple-950/25 p-3 rounded-2xl border border-purple-500/10">
+                        <span class="text-xs font-magic text-yellow-400 mb-2"><i class="fa-solid fa-egg mr-1"></i> Junior Guilds / 低中年級公會 (Grades 1-3)</span>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div onclick="selectClass('1A')" class="class-card group bg-gradient-to-b from-indigo-950/80 to-purple-950/80 p-4 rounded-xl border-2 border-purple-500/20 hover:border-yellow-400 cursor-pointer transform hover:-translate-y-1 transition-all shadow-md hover:shadow-yellow-500/10 text-center">
+                                <div class="text-3xl mb-2 text-purple-400 group-hover:text-yellow-300 transition-colors"><i class="fa-solid fa-egg animate-magic-float"></i></div>
+                                <span class="text-lg font-magic text-white group-hover:text-yellow-300 block">Class 1A</span>
+                                <span class="text-[9px] text-purple-300 block mt-0.5">Dragon Guild / 飛龍公會</span>
+                            </div>
+                            <div onclick="selectClass('2A')" class="class-card group bg-gradient-to-b from-indigo-950/80 to-purple-950/80 p-4 rounded-xl border-2 border-purple-500/20 hover:border-yellow-400 cursor-pointer transform hover:-translate-y-1 transition-all shadow-md hover:shadow-yellow-500/10 text-center">
+                                <div class="text-3xl mb-2 text-purple-400 group-hover:text-yellow-300 transition-colors"><i class="fa-solid fa-hat-wizard animate-magic-float"></i></div>
+                                <span class="text-lg font-magic text-white group-hover:text-yellow-300 block">Class 2A</span>
+                                <span class="text-[9px] text-purple-300 block mt-0.5">Phoenix Guild / 鳳凰公會</span>
+                            </div>
+                            <div onclick="selectClass('3A')" class="class-card group bg-gradient-to-b from-indigo-950/80 to-purple-950/80 p-4 rounded-xl border-2 border-purple-500/20 hover:border-yellow-400 cursor-pointer transform hover:-translate-y-1 transition-all shadow-md hover:shadow-yellow-500/10 text-center">
+                                <div class="text-3xl mb-2 text-purple-400 group-hover:text-yellow-300 transition-colors"><i class="fa-solid fa-feather-pointed animate-magic-float"></i></div>
+                                <span class="text-lg font-magic text-white group-hover:text-yellow-300 block">Class 3A</span>
+                                <span class="text-[9px] text-purple-300 block mt-0.5">Pegasus Guild / 天馬公會</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Class 4-6 -->
+                    <div class="flex flex-col gap-1 text-left bg-purple-950/25 p-3 rounded-2xl border border-purple-500/10">
+                        <span class="text-xs font-magic text-pink-400 mb-2"><i class="fa-solid fa-shield-halved mr-1"></i> Senior Guilds / 高年級公會 (Grades 4-6)</span>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div onclick="selectClass('4A')" class="class-card group bg-gradient-to-b from-indigo-950/80 to-purple-950/80 p-4 rounded-xl border-2 border-purple-500/20 hover:border-yellow-400 cursor-pointer transform hover:-translate-y-1 transition-all shadow-md hover:shadow-yellow-500/10 text-center">
+                                <div class="text-3xl mb-2 text-purple-400 group-hover:text-yellow-300 transition-colors"><i class="fa-solid fa-wand-magic animate-magic-float"></i></div>
+                                <span class="text-lg font-magic text-white group-hover:text-yellow-300 block">Class 4A</span>
+                                <span class="text-[9px] text-purple-300 block mt-0.5">Unicorn Guild / 獨角獸公會</span>
+                            </div>
+                            <div onclick="selectClass('5A')" class="class-card group bg-gradient-to-b from-indigo-950/80 to-purple-950/80 p-4 rounded-xl border-2 border-purple-500/20 hover:border-yellow-400 cursor-pointer transform hover:-translate-y-1 transition-all shadow-md hover:shadow-yellow-500/10 text-center">
+                                <div class="text-3xl mb-2 text-purple-400 group-hover:text-yellow-300 transition-colors"><i class="fa-solid fa-cat animate-magic-float"></i></div>
+                                <span class="text-lg font-magic text-white group-hover:text-yellow-300 block">Class 5A</span>
+                                <span class="text-[9px] text-purple-300 block mt-0.5">Griffin Guild / 獅鷲公會</span>
+                            </div>
+                            <div onclick="selectClass('6A')" class="class-card group bg-gradient-to-b from-indigo-950/80 to-purple-950/80 p-4 rounded-xl border-2 border-purple-500/20 hover:border-yellow-400 cursor-pointer transform hover:-translate-y-1 transition-all shadow-md hover:shadow-yellow-500/10 text-center">
+                                <div class="text-3xl mb-2 text-purple-400 group-hover:text-yellow-300 transition-colors"><i class="fa-solid fa-shield-halved animate-magic-float"></i></div>
+                                <span class="text-lg font-magic text-white group-hover:text-yellow-300 block">Class 6A</span>
+                                <span class="text-[9px] text-purple-300 block mt-0.5">Titan Guild / 泰坦公會</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 3: SELECT STUDENT -->
+            <section id="screen-student-select" class="hidden w-full max-w-5xl flex flex-col gap-4">
+                <div class="flex flex-row justify-between items-center gap-4">
+                    <button onclick="navigateToClassSelect()" class="bg-purple-950 hover:bg-purple-900 border border-purple-500/30 text-purple-200 px-4 py-2 rounded-xl font-magic text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-chevron-left"></i> Change Class / 更改班級
+                    </button>
+                    <div class="text-center">
+                        <h2 class="text-2xl font-magic text-yellow-300">🔮 Select Your Wizard / 選擇你的角色</h2>
+                        <p class="text-xs text-purple-300 font-magic">Find your code number and name / 請尋找你的座號與姓名</p>
+                    </div>
+                    <div class="w-64 relative">
+                        <input type="text" id="student-search" placeholder="Search name... / 搜尋名字..." oninput="filterStudents()" class="w-full bg-purple-950/80 border border-purple-500/50 rounded-xl px-4 py-2 pl-9 text-white placeholder-purple-400 text-xs focus:outline-none focus:ring-2 focus:ring-yellow-400 font-magic">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-purple-400 text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- Students cards grid -->
+                <div id="students-grid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3 max-h-[320px] overflow-y-auto p-2 bg-purple-950/20 rounded-xl border border-purple-900/30">
+                    <!-- Inserted dynamically -->
+                </div>
+            </section>
+
+            <!-- SCREEN 4: STUDENT DASHBOARD -->
+            <section id="screen-dashboard" class="hidden w-full max-w-6xl flex flex-col gap-4">
+                
+                <!-- Student Card Status Bar -->
+                <div class="flex flex-row justify-between items-center gap-4 bg-purple-950/50 p-4 rounded-xl border border-purple-500/20">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-yellow-400 to-pink-500 flex items-center justify-center text-white text-xl shadow border border-yellow-300 animate-magic-float">
+                            <i class="fa-solid fa-hat-wizard"></i>
+                        </div>
+                        <div>
+                            <h3 id="dashboard-student-name" class="text-lg font-magic text-white">Wizard Name</h3>
+                            <div class="flex items-center gap-2 mt-0.5">
+                                <span id="dashboard-student-class" class="text-[10px] font-magic text-yellow-300 px-2 py-0.5 rounded bg-purple-900 border border-purple-500/20">Class 3A</span>
+                                <span class="text-[10px] font-magic text-purple-300">Select Topic to start / 請選擇主題練習</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress tracking -->
+                    <div class="flex flex-col gap-1 w-60">
+                        <div class="flex justify-between items-center text-[10px] font-magic">
+                            <span class="text-purple-300">Topic Mastery / 主題熟練度</span>
+                            <span id="dashboard-progress-percentage" class="text-yellow-300">0%</span>
+                        </div>
+                        <div class="w-full bg-purple-950 rounded-full h-2.5 overflow-hidden border border-purple-500/20">
+                            <div id="dashboard-progress-fill" class="bg-gradient-to-r from-teal-400 to-emerald-500 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+
+                    <button onclick="navigateToClassSelect()" class="text-xs font-magic text-purple-300 hover:text-white transition-colors bg-purple-950 px-3 py-2 rounded-xl border border-purple-900/50">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Exit / 登出
+                    </button>
+                </div>
+
+                <!-- LANDSCAPE TOPICS GRID + SENTENCES SPLIT PANELS -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <!-- Left column: Topic Selection Panel -->
+                    <div class="bg-slate-950/50 p-4 rounded-xl border border-purple-500/10 flex flex-col gap-3">
+                        <h4 class="text-xs font-magic text-yellow-300 border-b border-purple-900/40 pb-1.5 uppercase tracking-wide">
+                            <i class="fa-solid fa-bookmark mr-1"></i> 1. Select Topic / 選擇主題
+                        </h4>
+                        
+                        <div id="topics-selection-list" class="flex flex-col gap-2 max-h-[250px] overflow-y-auto pr-1">
+                            <!-- Populated dynamically by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Sentences assigned to selected topic -->
+                    <div class="md:col-span-2 bg-slate-950/50 p-4 rounded-xl border border-purple-500/10 flex flex-col gap-3 justify-between">
+                        <div>
+                            <h4 class="text-xs font-magic text-teal-300 border-b border-purple-900/40 pb-1.5 uppercase tracking-wide flex justify-between items-center">
+                                <span><i class="fa-solid fa-scroll mr-1"></i> 2. Sentences list / 句子魔法書</span>
+                                <span id="active-topic-title" class="text-yellow-400 text-[10px]">Topic: Not Selected</span>
+                            </h4>
+
+                            <div id="sentence-scroll-list" class="flex flex-col gap-2 max-h-[200px] overflow-y-auto pr-1 mt-2">
+                                <!-- Loaded dynamically by JS -->
+                            </div>
+                        </div>
+
+                        <!-- TOPIC LEVEL CONSOLIDATED UPLOAD CARD -->
+                        <div id="topic-comprehensive-upload-banner" class="bg-gradient-to-r from-purple-950/80 to-indigo-950/80 p-3 rounded-xl border border-yellow-400/40 flex flex-row items-center justify-between gap-4 mt-2">
+                            <div class="flex items-center gap-3">
+                                <div class="text-3xl text-yellow-300 animate-magic-float">
+                                    <i class="fa-solid fa-box-open"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-xs font-magic text-yellow-300">Topic Compilation Chest / 單元語音總成寶箱</h5>
+                                    <p id="compilation-status-desc" class="text-[9px] text-purple-300 font-magic mt-0.5">Please pass all spells to unlock / 完成本單元所有咒語才能開啟</p>
+                                </div>
+                            </div>
+                            <button id="btn-topic-compile-upload" disabled onclick="handleConsolidatedUpload()" class="bg-slate-800 text-slate-500 cursor-not-allowed font-magic text-xs py-2 px-4 rounded-lg font-bold border transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Upload Topic / 整合上傳</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- SCREEN 5: PRACTICE ROOM (Landscape Dual Panel Arena) -->
+            <section id="screen-practice" class="hidden w-full max-w-6xl flex flex-col gap-4 relative">
+                
+                <!-- Nav / Status bar -->
+                <div class="flex justify-between items-center gap-4">
+                    <button onclick="returnToDashboard()" class="bg-purple-950 hover:bg-purple-900 border border-purple-500/30 text-purple-200 px-3 py-1.5 rounded-xl font-magic text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-scroll"></i> Back Dashboard / 返回主題面板
+                    </button>
+                    <div class="text-center">
+                        <p id="practice-index-label" class="text-xs font-magic text-purple-300 uppercase tracking-widest">Spell 1 of X</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="practice-sentence-badge" class="px-3 py-1 rounded-full text-[10px] font-magic bg-gray-900 border border-gray-700 text-gray-400">
+                            Not Started
+                        </span>
+                    </div>
+                </div>
+
+                <!-- LANDSCAPE DUAL PANEL PRACTICE WORKSPACE -->
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 bg-gradient-to-b from-purple-950/50 to-indigo-950/50 rounded-2xl border border-purple-500/20 shadow-2xl p-5 relative overflow-hidden">
+                    
+                    <!-- Left Panel (3/5): English target text, translation, vocal chanter -->
+                    <div class="md:col-span-3 flex flex-col justify-between border-r border-purple-900/40 pr-5 gap-4">
+                        <div class="text-center md:text-left">
+                            <span class="text-[9px] font-magic text-yellow-400 bg-yellow-950/60 px-2 py-0.5 rounded-full uppercase tracking-wider">Cast This Spell / 吟唱此句咒語</span>
+                            <h3 id="target-sentence-text" class="font-practice text-3xl md:text-4.5xl font-bold text-yellow-300 tracking-wide leading-relaxed mt-2 min-h-[90px] break-words">
+                                Loading Spell...
+                            </h3>
+                            
+                            <!-- Trad Chinese Translation block -->
+                            <div id="translation-section" class="mt-2 min-h-[40px] transition-all duration-300">
+                                <p id="target-sentence-translation" class="hidden text-lg md:text-xl font-magic text-teal-400 italic">
+                                    Loading Translation...
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Audio and translation helpers -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <!-- Play standard synthesizer TTS -->
+                            <button onclick="playTTS()" class="w-full bg-purple-900/40 hover:bg-purple-900/60 text-purple-200 font-magic py-2 px-3 rounded-xl flex items-center justify-center gap-2 transition-all border border-purple-500/25 text-xs">
+                                <i class="fa-solid fa-volume-high text-yellow-300 text-base"></i>
+                                <span class="text-left">
+                                    <span class="block font-bold">🔊 Listen Spell / 聆聽</span>
+                                    <span class="block text-[8px] text-purple-400">聽取真人發音</span>
+                                </span>
+                            </button>
+
+                            <!-- Show/Hide translation button -->
+                            <button id="btn-toggle-translation" onclick="toggleTranslationVisibility()" class="w-full bg-purple-900/40 hover:bg-purple-900/60 text-purple-200 font-magic py-2 px-3 rounded-xl flex items-center justify-center gap-2 transition-all border border-purple-500/25 text-xs">
+                                <i class="fa-solid fa-globe text-teal-400 text-base"></i>
+                                <span class="text-left">
+                                    <span class="block font-bold">🌏 Translation / 中文翻譯</span>
+                                    <span class="block text-[8px] text-purple-400">顯示或隱藏翻譯</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel (2/5): Speech mic recorder & live outcomes score evaluation -->
+                    <div class="md:col-span-2 flex flex-col justify-between pl-1 gap-4">
+                        
+                        <!-- Word feedback block -->
+                        <div class="flex flex-col gap-2 flex-grow">
+                            <span class="text-[9px] font-magic text-purple-300 uppercase tracking-widest text-center">Magical Feedback / 魔法評分回饋</span>
+                            <div id="live-speech-transcription" class="flex flex-wrap justify-center content-center gap-2 p-3 bg-purple-950/60 rounded-xl border border-purple-900/40 min-h-[100px] w-full text-center">
+                                <span class="text-purple-400 italic font-magic text-[11px] self-center">Press the microphone below and speak! <br>請點擊下方按鈕並開始說話！</span>
+                            </div>
+                        </div>
+
+                        <!-- Mic control buttons -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <!-- Core speak trigger -->
+                            <button id="btn-practice-speak" onclick="toggleSpeechRecognition()" class="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-purple-950 font-magic py-2.5 px-3 rounded-xl flex flex-col items-center justify-center gap-0.5 transition-all shadow border-b-2 border-amber-700 active:translate-y-0.5">
+                                <span class="text-lg" id="speak-icon"><i class="fa-solid fa-microphone animate-magic-float"></i></span>
+                                <span class="text-[10px] font-bold uppercase block leading-none" id="speak-label">🎤 Chant Spell / 吟唱</span>
+                                <span class="text-[8px] text-purple-900 block font-semibold">點擊開始吟唱</span>
+                            </button>
+
+                            <!-- Listen to local recorded voice file (Instantly playable right after evaluation) -->
+                            <button id="btn-play-recording" disabled onclick="playbackUserRecording()" class="w-full bg-purple-950 text-purple-600 font-magic py-2.5 px-3 rounded-xl flex flex-col items-center justify-center gap-0.5 transition-all border border-purple-900/30 cursor-not-allowed">
+                                <span class="text-lg"><i class="fa-solid fa-play"></i></span>
+                                <span class="text-[10px] font-bold uppercase block leading-none">👂 My Voice / 聆聽錄音</span>
+                                <span class="text-[8px] text-purple-500 block font-semibold">聆聽我的發音</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SPELL RESULTS OVERLAY CARD -->
+                <div id="practice-result-card" class="hidden bg-purple-950/95 p-4 rounded-xl border-2 border-yellow-400 flex flex-row items-center justify-between gap-6 animate-star-twinkle">
+                    <div class="flex items-center gap-4">
+                        <div id="practice-result-visual" class="text-4xl text-yellow-300">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <div>
+                            <p id="practice-result-score" class="text-xl font-magic text-yellow-300">Spell Score: 100% / 魔法評分: 100%</p>
+                            <p id="practice-result-message" class="text-purple-200 font-magic text-xs mt-0.5">Perfect Pronunciation Mastery! / 發音非常完美！</p>
+                        </div>
+                    </div>
+                    <div id="practice-recorded-filename-info" class="text-[10px] font-magic text-purple-400 bg-black/40 px-3 py-1.5 rounded-lg max-w-xs truncate">
+                        Saved to Topic Chest / 已暫存至單元寶箱
+                    </div>
+                </div>
+
+                <!-- Setup explanations guideline -->
+                <div class="bg-indigo-950/40 p-3 rounded-xl border border-purple-900/20 text-center text-[11px] text-purple-300 leading-relaxed font-magic">
+                    <p>💡 <strong>Classroom Notice / 課堂叮嚀:</strong> Your highest score attempt is saved locally in your Topic Chest. No individual files are uploaded yet. Complete all topic sentences to open the chest on the dashboard and upload everything to the cloud!</p>
+                    <p>本句最高分錄音已自動儲存於單元寶箱中。目前尚未上傳！完成本單元所有句子後，即可回到主面板開啟寶箱進行整合上傳。</p>
+                </div>
+
+                <!-- Bottom navigation buttons -->
+                <div class="flex justify-between items-center gap-4">
+                    <button onclick="navigateSentence(-1)" id="btn-prev-sentence" class="bg-purple-950 hover:bg-purple-900 text-purple-200 border border-purple-500/20 px-4 py-2 rounded-xl font-magic text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-chevron-left"></i> Prev Spell / 上一句
+                    </button>
+                    <button onclick="navigateSentence(1)" id="btn-next-sentence" class="bg-purple-950 hover:bg-purple-900 text-purple-200 border border-purple-500/20 px-4 py-2 rounded-xl font-magic text-xs flex items-center gap-2">
+                        Next Spell / 下一句 <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-4 border-t border-purple-950 bg-black/40 py-3 text-center text-[10px] text-purple-400 z-10 font-magic leading-relaxed">
+        <p>© 2026 Cigu Elementary School Language Lab / 七股國小語文實驗室. All Rights Reserved. Designed for Young EFL Wizards. By JEI</p>
+        <p class="text-[9px] text-purple-500">Harnessing Web Speech API, MediaRecorder, and Google Cloud App Integration Templates.</p>
+    </footer>
+
+    <!-- MODAL 1: TEACHER PIN VERIFICATION -->
+    <div id="modal-teacher-pin" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-indigo-950 to-purple-950 border border-purple-500/30 w-full max-w-sm rounded-2xl p-5 text-center shadow-2xl relative">
+            <button onclick="closePinModal()" class="absolute top-3 right-3 text-purple-400 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
+            <div class="w-12 h-12 bg-purple-950 border border-purple-500/20 text-yellow-300 rounded-full flex items-center justify-center text-xl mx-auto mb-3 animate-magic-float">
+                <i class="fa-solid fa-key"></i>
+            </div>
+            <h3 class="text-lg font-magic text-white mb-1">Teacher Verification / 教師身分驗證</h3>
+            <p class="text-[10px] text-purple-300 font-magic mb-4">Please enter the 4-digit laboratory PIN code / 請輸入四位數管理密碼</p>
+            
+            <div class="flex justify-center gap-2 mb-4">
+                <input type="password" maxlength="4" id="pin-input" placeholder="••••" class="tracking-[1em] text-center w-36 text-xl bg-purple-950 border border-purple-500/50 rounded-lg py-1.5 focus:outline-none focus:ring-2 focus:ring-yellow-400 font-bold text-white font-magic">
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <button onclick="verifyTeacherPin()" class="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white font-magic font-bold py-2 px-6 rounded-lg transition-all text-xs active:translate-y-0.5">
+                    Unlock Panel / 解鎖管理面板
+               
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: COMPREHENSIVE TEACHER MANAGEMENT PANEL -->
+    <section id="panel-teacher-dashboard" class="hidden fixed inset-0 z-40 bg-slate-950 overflow-y-auto text-slate-100 flex flex-col font-standard">
+        <!-- Top Navigation Header -->
+        <header class="bg-indigo-950 border-b border-indigo-900/60 p-3 sticky top-0 z-10 flex justify-between items-center shadow">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-laptop-code text-yellow-400 text-lg animate-magic-float"></i>
+                <div>
+                    <h2 class="text-base font-magic text-yellow-300">Cigu Lab - Teacher Control Panel / 教師控制台</h2>
+                    <p class="text-[9px] text-purple-300 font-magic">Manage Students, Topics, Sentences, Translations & Database Logs</p>
+                </div>
+            </div>
+            
+            <!-- Close action button takes teacher straight to Class Guild Select screen -->
+            <button onclick="exitTeacherPanel()" class="bg-indigo-900 hover:bg-indigo-850 text-white font-magic text-xs px-4 py-2 rounded-xl border border-indigo-700 shadow flex items-center gap-1.5 transition-all font-bold">
+                <i class="fa-solid fa-house-chimney"></i> Main Page (choose your class) / 回班級選單
+            </button>
+        </header>
+
+        <div class="max-w-7xl mx-auto w-full p-4 grid grid-cols-1 lg:grid-cols-4 gap-4 flex-grow">
+            <!-- Sidebar Selection tabs -->
+            <aside class="lg:col-span-1 bg-slate-900 p-3 rounded-xl border border-slate-800 flex flex-col gap-1.5 h-fit">
+                <p class="text-[9px] font-bold text-slate-400 px-2 uppercase tracking-wider mb-2">Spell Laboratory Settings</p>
+                
+                <button onclick="switchTeacherTab('tab-students')" class="teacher-tab-btn active w-full text-left font-magic text-xs px-3 py-2.5 rounded-lg transition-all flex items-center gap-2 bg-indigo-950 border-l-4 border-yellow-400 text-yellow-300">
+                    <i class="fa-solid fa-users text-xs"></i> Student Registry / 學生註冊
+                </button>
+                <button onclick="switchTeacherTab('tab-sentences')" class="teacher-tab-btn w-full text-left font-magic text-xs px-3 py-2.5 rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:bg-slate-800">
+                    <i class="fa-solid fa-book-bookmark text-xs"></i> Topic & Spell Editor / 主題句子編輯
+                </button>
+                <button onclick="switchTeacherTab('tab-settings')" class="teacher-tab-btn w-full text-left font-magic text-xs px-3 py-2.5 rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:bg-slate-800">
+                    <i class="fa-solid fa-cloud-arrow-up text-xs"></i> Google Cloud Sync / 雲端同步
+                </button>
+                <button onclick="switchTeacherTab('tab-reports')" class="teacher-tab-btn w-full text-left font-magic text-xs px-3 py-2.5 rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:bg-slate-800">
+                    <i class="fa-solid fa-chart-line text-xs"></i> Reports & Audios / 評分報告
+                </button>
+
+                <hr class="border-slate-800 my-2">
+                <p class="text-[9px] font-bold text-slate-400 px-2 uppercase tracking-wider mb-1">Data Backup / 資料備份</p>
+                
+                <button onclick="forceSaveData()" class="w-full text-left font-magic text-xs px-3 py-2 rounded-lg transition-all flex items-center gap-2 bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-500/30 text-emerald-400 shadow">
+                    <i class="fa-solid fa-floppy-disk text-xs"></i> Save to Memory / 儲存變更
+                </button>
+                <button onclick="exportJSON()" class="w-full text-left font-magic text-xs px-3 py-2 rounded-lg transition-all flex items-center gap-2 bg-indigo-950/60 hover:bg-indigo-900 border border-indigo-500/30 text-indigo-300 shadow mt-1">
+                    <i class="fa-solid fa-download text-xs"></i> Export JSON / 匯出備份
+                </button>
+                <button onclick="document.getElementById('import-json-file').click()" class="w-full text-left font-magic text-xs px-3 py-2 rounded-lg transition-all flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-600/50 text-slate-300 shadow mt-1">
+                    <i class="fa-solid fa-upload text-xs"></i> Import JSON / 匯入還原
+                </button>
+                <input type="file" id="import-json-file" accept=".json" class="hidden" onchange="importJSON(event)">
+            </aside>
+
+            <!-- Workspace Viewport panel -->
+            <main class="lg:col-span-3 bg-slate-900/40 border border-slate-800 p-4 rounded-xl flex flex-col gap-4">
+                
+                <!-- TAB 1: STUDENT REGISTRY -->
+                <div id="tab-students" class="teacher-tab-view flex flex-col gap-4">
+                    <div class="flex justify-between items-center gap-4 flex-wrap border-b border-slate-800 pb-3">
+                        <div>
+                            <h3 class="text-lg font-magic text-white">Student Wizard Registry / 學生精靈名冊</h3>
+                            <p class="text-xs text-slate-400">Add, review, and organize magical EFL students / 建立與編排班級學生成員</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <!-- Open Single Import -->
+                            <button onclick="openAddStudentModal()" class="bg-indigo-600 hover:bg-indigo-500 font-magic text-xs text-white px-3 py-2 rounded-xl flex items-center gap-1.5 shadow">
+                                <i class="fa-solid fa-user-plus"></i> Summon Student / 新增學生
+                            </button>
+                            <!-- Open Batch Import -->
+                            <button onclick="openBatchStudentModal()" class="bg-emerald-600 hover:bg-emerald-500 font-magic text-xs text-white px-3 py-2 rounded-xl flex items-center gap-1.5 shadow">
+                                <i class="fa-solid fa-users-viewfinder"></i> Batch Import / 批次匯入
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Guild class filter bar -->
+                    <div class="flex gap-1 bg-slate-950 p-1.5 rounded-lg overflow-x-auto border border-slate-800">
+                        <button onclick="filterTeacherClass('ALL')" id="btn-class-filter-all" class="class-filter-btn active font-magic text-xs px-3 py-1 rounded-md bg-indigo-950 border border-indigo-500/30 text-white">All Class / 所有班級</button>
+                        <button onclick="filterTeacherClass('1A')" class="class-filter-btn font-magic text-xs px-3 py-1 rounded-md text-slate-400 hover:bg-slate-800">1A</button>
+                        <button onclick="filterTeacherClass('2A')" class="class-filter-btn font-magic text-xs px-3 py-1 rounded-md text-slate-400 hover:bg-slate-800">2A</button>
+                        <button onclick="filterTeacherClass('3A')" class="class-filter-btn font-magic text-xs px-3 py-1 rounded-md text-slate-400 hover:bg-slate-800">3A</button>
+                        <button onclick="filterTeacherClass('4A')" class="class-filter-btn font-magic text-xs px-3 py-1 rounded-md text-slate-400 hover:bg-slate-800">4A</button>
+                        <button onclick="filterTeacherClass('5A')" class="class-filter-btn font-magic text-xs px-3 py-1 rounded-md text-slate-400 hover:bg-slate-800">5A</button>
+                        <button onclick="filterTeacherClass('6A')" class="class-filter-btn font-magic text-xs px-3 py-1 rounded-md text-slate-400 hover:bg-slate-800">6A</button>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-lg border border-slate-800">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-950 text-slate-400 font-magic uppercase border-b border-slate-800">
+                                <tr>
+                                    <th class="px-3 py-2.5">ID / 座號</th>
+                                    <th class="px-3 py-2.5">Wizard Name / 姓名</th>
+                                    <th class="px-3 py-2.5">Guild / 班級</th>
+                                    <th class="px-3 py-2.5">Stars / 星星</th>
+                                    <th class="px-3 py-2.5">Avg Score / 平均分數</th>
+                                    <th class="px-3 py-2.5 text-center">Banish / 刪除</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teacher-students-tbody" class="divide-y divide-slate-800 bg-slate-900/30">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 2: TOPIC & SPELL EDITOR -->
+                <div id="tab-sentences" class="teacher-tab-view hidden flex flex-col gap-4">
+                    <div class="border-b border-slate-800 pb-3">
+                        <h3 class="text-lg font-magic text-white">Topic & Spell Assignment Editor / 主題與句子編輯器</h3>
+                        <p class="text-xs text-slate-400">Design categorized speech topics, custom translations, and target guilds / 編輯語意主題、翻譯設定與分組任務</p>
+                    </div>
+
+                    <div class="bg-slate-950/50 p-4 rounded-xl border border-slate-800 flex flex-col gap-3">
+                        <h4 class="text-xs font-magic text-yellow-300 border-b border-slate-900 pb-1.5"><i class="fa-solid fa-scroll mr-1"></i> Step 1: Assignment Properties / 步驟一：對象與主題設定</h4>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <!-- Assignment Level Selector -->
+                            <div>
+                                <label class="block text-[10px] font-magic text-slate-300 mb-1">Target Range / 派發對象</label>
+                                <select id="assignment-level-select" onchange="toggleAssignmentLevelOptions()" class="w-full bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-yellow-400 font-magic">
+                                    <option value="school">School-wide (All Students) / 全校通用</option>
+                                    <option value="class" selected>Whole Class Guild / 整個班級</option>
+                                    <option value="selected">Selected Students / 指定學生</option>
+                                </select>
+                            </div>
+
+                            <!-- Class Select -->
+                            <div id="wrapper-class-select">
+                                <label class="block text-[10px] font-magic text-slate-300 mb-1">Target Class Guild / 目標班級</label>
+                                <select id="assignment-class-select" onchange="refreshAssignmentTargetStudents()" class="w-full bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-yellow-400 font-magic">
+                                    <option value="1A">Class 1A</option>
+                                    <option value="2A">Class 2A</option>
+                                    <option value="3A" selected>Class 3A</option>
+                                    <option value="4A">Class 4A</option>
+                                    <option value="5A">Class 5A</option>
+                                    <option value="6A">Class 6A</option>
+                                </select>
+                            </div>
+
+                            <!-- Topic Name Assignment Input -->
+                            <div>
+                                <label class="block text-[10px] font-magic text-slate-300 mb-1">Topic Grouping / 主題分類 (English / 中文)</label>
+                                <input type="text" id="assignment-topic-name" placeholder="E.g. Daily Greeting / 常見問候" class="w-full bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-yellow-400 font-magic">
+                            </div>
+                        </div>
+
+                        <!-- Checked Target Students -->
+                        <div id="wrapper-student-checklist" class="hidden">
+                            <label class="block text-[10px] font-magic text-slate-300 mb-1.5">Check Students / 勾選個別魔法學生</label>
+                            <div id="assignment-student-list-container" class="grid grid-cols-2 sm:grid-cols-4 gap-2 p-2 bg-slate-900 rounded-lg border border-slate-800 max-h-[120px] overflow-y-auto">
+                                <!-- Loaded dynamically -->
+                            </div>
+                        </div>
+
+                        <h4 class="text-xs font-magic text-yellow-300 border-b border-slate-900 pb-1.5 mt-2"><i class="fa-solid fa-keyboard mr-1"></i> Step 2: Write Spells & Translations / 步驟二：輸入拼讀句子與中文翻譯</h4>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <!-- English sentence raw input -->
+                            <div>
+                                <label class="block text-[10px] font-magic text-slate-300 mb-1">Target English Sentences (One per line) / 英文目標句子 (每行一句)</label>
+                                <textarea id="assignment-text-sentences" rows="4" placeholder="I can swim.&#10;She is my friend.&#10;We go to school by bus." class="w-full bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-yellow-400 font-practice placeholder-slate-600"></textarea>
+                            </div>
+
+                            <!-- Traditional Chinese Translations -->
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="block text-[10px] font-magic text-slate-300">Custom Translations (One per line) / 中文翻譯對照 (每行一句)</label>
+                                    <button onclick="aiMagicTranslateInput()" class="bg-indigo-950 hover:bg-indigo-900 border border-indigo-500/30 text-yellow-300 text-[9px] font-magic px-2 py-0.5 rounded shadow flex items-center gap-1">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i> Auto Translate / 自動帶入範例
+                                    </button>
+                                </div>
+                                <textarea id="assignment-text-translations" rows="4" placeholder="我會游泳。&#10;她是我的朋友。&#10;我們搭公車上學。" class="w-full bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-yellow-400 font-magic placeholder-slate-600"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Translation Options -->
+                        <div>
+                            <label class="block text-[10px] font-magic text-slate-300 mb-1">Chinese Translation Mode / 中文對照顯示設定</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <label class="flex items-center gap-2 p-2 bg-slate-900/50 hover:bg-slate-900 rounded-lg border border-slate-800 cursor-pointer">
+                                    <input type="radio" name="translation-mode" value="hidden" checked class="text-indigo-600">
+                                    <div class="text-[10px] font-magic">
+                                        <p class="text-slate-200">Hidden Until Clicked / 點擊後才顯示</p>
+                                        <p class="text-slate-400 text-[8px]">(Recommended / 推薦)</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center gap-2 p-2 bg-slate-900/50 hover:bg-slate-900 rounded-lg border border-slate-800 cursor-pointer">
+                                    <input type="radio" name="translation-mode" value="auto" class="text-indigo-600">
+                                    <div class="text-[10px] font-magic">
+                                        <p class="text-slate-200">Show Automatically / 自動直接顯示</p>
+                                        <p class="text-slate-400 text-[8px]">(Bilingual mode / 雙語模式)</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center gap-2 p-2 bg-slate-900/50 hover:bg-slate-900 rounded-lg border border-slate-800 cursor-pointer">
+                                    <input type="radio" name="translation-mode" value="english-only" class="text-indigo-600">
+                                    <div class="text-[10px] font-magic">
+                                        <p class="text-slate-200">English Only / 僅英文</p>
+                                        <p class="text-slate-400 text-[8px]">(No translations / 禁用中文)</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Actions row -->
+                        <div class="flex justify-end gap-2 border-t border-slate-900 pt-2">
+                            <button onclick="previewFormedSentences()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-magic text-xs px-3 py-1.5 rounded-lg flex items-center gap-1">
+                                <i class="fa-solid fa-eye"></i> Live Preview / 預覽句子
+                            </button>
+                            <button onclick="saveSentenceAssignment()" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-magic text-xs font-bold px-4 py-1.5 rounded-lg flex items-center gap-1 shadow">
+                                <i class="fa-solid fa-floppy-disk"></i> Deploy Topic Spells / 派發主題句子
+                            </button>
+                        </div>
+                    </div>
+
+                    <h4 class="text-xs font-magic text-slate-300 mt-2"><i class="fa-solid fa-folder-open mr-1"></i> Active Deployed Topics Database / 現役派發主題庫</h4>
+                    <div id="active-assignments-registry" class="flex flex-col gap-2">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- TAB 3: GOOGLE SYNC SETTINGS -->
+                <div id="tab-settings" class="teacher-tab-view hidden flex flex-col gap-4">
+                    <div class="border-b border-slate-800 pb-3">
+                        <h3 class="text-lg font-magic text-white">Google Integration / 谷歌雲端整合設定</h3>
+                        <p class="text-xs text-slate-400">Synchronize audio waves dynamically to Google Drive, and record real-time grading reports onto Google Sheets.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Google Drive Backup setting -->
+                        <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800 flex flex-col gap-3">
+                            <h4 class="text-xs font-magic text-yellow-300 flex items-center gap-1.5 border-b border-slate-900 pb-1.5">
+                                <i class="fa-brands fa-google-drive text-emerald-400"></i> Google Drive Cloud Recording Folder
+                            </h4>
+                            <p class="text-[10px] text-slate-400">
+                                Once integrated, voice recordings (.wav) are synchronized directly into Google Drive subfolders:
+                            </p>
+                            <div class="bg-black/40 p-2 rounded-lg text-[9px] text-emerald-400 font-mono">
+                                Language Lab Recordings / [Date] / [Class] / [Student] / [Topic] / [Spell].wav
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <div>
+                                    <label class="block text-[10px] font-magic text-slate-300 mb-1">Google Drive Folder ID / 雲端資料夾 ID</label>
+                                    <input type="text" id="drive-folder-id" placeholder="1-00o2LVhMUbGu9oqBD8m9bT0HEdeaxA2" class="w-full bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-yellow-400 font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-magic text-slate-300 mb-1">Google Apps Script URL / 巨集 API 連接埠</label>
+                                    <input type="text" id="drive-folder-api"  placeholder="https://script.google.com/macros/s/AKfycbxq_SslMYqji2-C5v_PGvy0wEC1eF5GFF9eV07VVqkeHNn_RJ10xRuXSeoWAAGUSxOp/exec" class="w-full bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-yellow-400 font-mono">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Google Sheets Score Integration -->
+                        <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800 flex flex-col gap-3">
+                            <h4 class="text-xs font-magic text-yellow-300 flex items-center gap-1.5 border-b border-slate-900 pb-1.5">
+                                <i class="fa-solid fa-table text-blue-400"></i> Google Sheets Score Sync Tracker
+                            </h4>
+                            <p class="text-[10px] text-slate-400">
+                                Evaluated pronunciation scores, timestamps, topics, and completion outcomes automatically record onto Sheets.
+                            </p>
+                            <div class="bg-black/40 p-2 rounded-lg text-[9px] text-blue-400 font-mono">
+                                Columns: Timestamp | Date | Guild | Wizard | Topic | Sentence | Score | Status
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <div>
+                                    <label class="block text-[10px] font-magic text-slate-300 mb-1">Google Sheet Doc URL / 試算表連結</label>
+                                    <input type="text" id="sheet-folder-id" placeholder="https://docs.google.com/spreadsheets/d/18l_9NxNHWTLlNi6X6A6EnpKP7p8zGg3g8BgrTw6caCg/edit?gid=0#gid=0" class="w-full bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-yellow-400 font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-magic text-slate-300 mb-1">Google Sheets Script API URL / 試算巨集 API 連接埠</label>
+                                    <input type="text" id="sheet-folder-api"  placeholder="https://script.google.com/macros/s/AKfycbxq_SslMYqji2-C5v_PGvy0wEC1eF5GFF9eV07VVqkeHNn_RJ10xRuXSeoWAAGUSxOp/exec" class="w-full bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-yellow-400 font-mono">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="bg-indigo-950/40 border border-indigo-900/60 p-3 rounded-lg flex items-center justify-between flex-wrap gap-4 mt-1 text-xs">
+                        <div>
+                            <p class="font-magic text-white">Save Settings Sync Status / 儲存連線狀態</p>
+                            <p class="text-[10px] text-indigo-300">Operational locally if script endpoints are left empty / 如果保持空白，實驗室將安全地本機運行</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="testIntegrationConnection()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-magic text-xs px-4 py-1.5 rounded-lg transition-all">Test Connection / 測試連線</button>
+                            <button onclick="saveCloudSettings()" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-magic font-bold text-xs px-4 py-1.5 rounded-lg transition-all">Save Changes / 儲存設定</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: REPORTS DASHBOARD -->
+                <div id="tab-reports" class="teacher-tab-view hidden flex flex-col gap-4">
+                    <div class="border-b border-slate-800 pb-3">
+                        <h3 class="text-lg font-magic text-white">Laboratory Grimoire Reports / 實驗室成績與錄音報表</h3>
+                        <p class="text-xs text-slate-400">Review class performance, topic mastery, and access raw audio artifacts.</p>
+                    </div>
+                    
+                    <div class="bg-slate-950/50 p-4 rounded-xl border border-slate-800 flex flex-col gap-3">
+                        <div class="flex gap-3 items-center flex-wrap">
+                            <select id="report-class-filter" class="bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-yellow-400 font-magic">
+                                <option value="ALL">All Classes / 所有班級</option>
+                                <option value="1A">Class 1A</option>
+                                <option value="2A">Class 2A</option>
+                                <option value="3A">Class 3A</option>
+                                <option value="4A">Class 4A</option>
+                                <option value="5A">Class 5A</option>
+                                <option value="6A">Class 6A</option>
+                            </select>
+                            <button onclick="renderReports()" class="bg-indigo-600 hover:bg-indigo-500 font-magic text-xs text-white px-4 py-2 rounded-xl flex items-center gap-1.5 shadow">
+                                <i class="fa-solid fa-filter"></i> Filter Results / 篩選結果
+                            </button>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-lg border border-slate-800">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-950 text-slate-400 font-magic uppercase border-b border-slate-800">
+                                    <tr>
+                                        <th class="px-3 py-2.5">Date / 日期</th>
+                                        <th class="px-3 py-2.5">Student / 學生</th>
+                                        <th class="px-3 py-2.5">Topic / 主題</th>
+                                        <th class="px-3 py-2.5 max-w-[200px]">Sentence / 句子</th>
+                                        <th class="px-3 py-2.5">Score / 分數</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reports-tbody" class="divide-y divide-slate-800 bg-slate-900/30">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <!-- Modal: Add Single Student -->
+    <div id="modal-add-student" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl p-5 shadow-2xl relative">
+            <button onclick="closeAddStudentModal()" class="absolute top-3 right-3 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-lg font-magic text-white mb-4">Summon Student / 新增單一魔法學徒</h3>
+            <div class="flex flex-col gap-4">
+                <div>
+                    <label class="block text-[11px] font-magic text-slate-300 mb-1">Guild / 班級</label>
+                    <select id="new-student-class" class="w-full bg-slate-950 border border-slate-800 text-white text-sm rounded-lg p-2 font-magic focus:ring-1 focus:ring-yellow-400 outline-none">
+                        <option value="1A">Class 1A</option><option value="2A">Class 2A</option><option value="3A">Class 3A</option>
+                        <option value="4A">Class 4A</option><option value="5A">Class 5A</option><option value="6A">Class 6A</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-magic text-slate-300 mb-1">ID Code / 座號</label>
+                    <input type="number" id="new-student-id" class="w-full bg-slate-950 border border-slate-800 text-white text-sm rounded-lg p-2 font-magic focus:ring-1 focus:ring-yellow-400 outline-none" placeholder="e.g. 1">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-magic text-slate-300 mb-1">Wizard Name / 姓名</label>
+                    <input type="text" id="new-student-name" class="w-full bg-slate-950 border border-slate-800 text-white text-sm rounded-lg p-2 font-magic focus:ring-1 focus:ring-yellow-400 outline-none" placeholder="e.g. Harry Potter">
+                </div>
+                <button onclick="addSingleStudent()" class="mt-2 bg-indigo-600 hover:bg-indigo-500 text-white font-magic py-2 rounded-xl text-sm transition-all shadow">
+                    Summon to Registry / 加入名冊
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Batch Import Students -->
+    <div id="modal-batch-student" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+         <div class="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-2xl p-5 shadow-2xl relative">
+            <button onclick="closeBatchStudentModal()" class="absolute top-3 right-3 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-lg font-magic text-white mb-2">Batch Summon / 批次匯入學徒</h3>
+            <p class="text-[10px] text-slate-400 mb-4 font-magic">Format strictly (One per line): <strong class="text-indigo-400">Class,ID,Name</strong><br>Example: 3A,1,Harry Potter</p>
+            <textarea id="batch-student-data" rows="6" class="w-full bg-slate-950 border border-slate-800 text-white text-sm rounded-lg p-3 font-magic mb-3 focus:ring-1 focus:ring-yellow-400 outline-none" placeholder="3A,1,Harry Potter&#10;3A,2,Hermione Granger&#10;4A,1,Ron Weasley"></textarea>
+            <button onclick="processBatchStudents()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-magic py-2.5 rounded-xl text-sm transition-all shadow">
+                Process Batch Import / 執行批次匯入
+            </button>
+         </div>
+    </div>
+
+    <script>
+        // CORE APPLICATION STATE
+        let state = {
+            students: [],
+            topics: [],
+            reports: [],
+            currentClass: null,
+            currentStudent: null,
+            currentTopic: null,
+            currentSentenceIndex: 0,
+            recordedAudio: {}, // Stores blobls by sentence index locally
+            sentenceScores: {}, // Stores highest score by sentence index
+            isRecording: false,
+            teacherPin: '2114',
+            teacherClassFilter: 'ALL'
+        };
+
+        // AUDIO & SPEECH GLOBALS
+        let recognition = null;
+        let mediaRecorder = null;
+        let audioChunks = [];
+
+        // ON LOAD INITIALIZATION
+        window.onload = () => {
+            loadData();
+            transitionTo('screen-splash');
+            toggleAssignmentLevelOptions();
+        };
+
+        // DATA PERSISTENCE
+        function saveData() {
+            localStorage.setItem('cigu_lab_data', JSON.stringify({
+                students: state.students,
+                topics: state.topics,
+                reports: state.reports
+            }));
+        }
+
+        function forceSaveData() {
+            saveData();
+            alert("All laboratory data successfully saved to local memory! / 所有資料已成功儲存至本機！");
+        }
+
+        function exportJSON() {
+            const exportData = {
+                students: state.students,
+                topics: state.topics,
+                reports: state.reports
+            };
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Cigu_Lab_Backup_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert("Database exported to JSON successfully! / 資料已成功匯出成 JSON！");
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedState = JSON.parse(e.target.result);
+                    if (importedState.students && Array.isArray(importedState.students)) {
+                        state.students = importedState.students;
+                        state.topics = importedState.topics || [];
+                        state.reports = importedState.reports || [];
+                        
+                        saveData();
+                        refreshTeacherPanel();
+                        alert("Database restored successfully from JSON! / 資料庫已成功由 JSON 匯入並還原！");
+                    } else {
+                        alert("Invalid JSON format! Missing required data. / 檔案格式不符，缺少必要資料！");
+                    }
+                } catch(err) {
+                    alert("Error parsing JSON file. Please ensure it's a valid backup. / 讀取 JSON 檔案失敗，請確認檔案格式正確。");
+                }
+            };
+            reader.readAsText(file);
+            // Reset input so the same file can be selected again
+            event.target.value = '';
+        }
+
+        function loadData() {
+            const data = localStorage.getItem('cigu_lab_data');
+            if (data) {
+                const parsed = JSON.parse(data);
+                state.students = parsed.students || [];
+                state.topics = parsed.topics || [];
+                state.reports = parsed.reports || [];
+            } else {
+                // Initialize default dummy data for presentation
+                state.students = [
+                    { class: '2A', id: '1', name: 'Eric', stars: 0, avgScore: 0 },
+                    { class: '2A', id: '2', name: 'William', stars: 0, avgScore: 0 },
+                    { class: '2A', id: '3', name: 'Kaybee', stars:0, avgScore: 0 },
+                    { class: '2A', id: '4', name: 'Marvin', stars: 0, avgScore: 0 },
+                    { class: '2A', id: '5', name: 'Eva', stars: 0, avgScore: 0 },
+                    { class: '2A', id: '6', name: 'Ruby', stars: 0, avgScore: 0 },
+                    { class: '2A', id: '7', name: 'Jaycee', stars: 0, avgScore: 0 },
+                    { class: '2A', id: '8', name: 'Minnie', stars: 0, avgScore: 0 },
+                    { class: '2A', id: '9', name: 'Tia', stars: 0, avgScore: 0 },
+                    { class: '2A', id: '00', name: 'Sample', stars: 0, avgScore: 0 }
+                ];
+                state.topics = [
+                    {
+                        id: 'topic_' + Date.now(),
+                        name: 'Daily Greetings / 常見問候語',
+                        targetRange: 'school',
+                        targetClass: 'ALL',
+                        targetStudents: [],
+                        translationMode: 'hidden',
+                        sentences: [
+                            { english: 'Good morning. How are you?', chinese: '早安。你好嗎？' },
+                            { english: 'I am fine, thank you.', chinese: '我很好，謝謝你。' },
+                            { english: 'Nice to meet you.', chinese: '很高興認識你。' }
+                        ]
+                    },
+                     {
+                        id: 'topic_' + Date.now(),
+                        name: 'Story-G1-5',
+                        targetRange: 'selected',
+                        targetClass: '2A',
+                        targetStudents: ['5','00'],
+                        translationMode: 'hidden',
+                        sentences: [
+                            { english: 'Milkfish meets shrimp in the ocean.', chinese:'' },
+                            { english: 'They swim in the sea.', chinese:'' },
+                            { english: 'After a long time, they feel hungry.', chinese:'' },
+                            { english: 'They cannot find food in the sea.', chinese:'' },
+                            { english: 'They find food and are happy.', chinese:'' }
+                        ]
+                    },
+                    {
+                        id: 'topic_' + Date.now(),
+                        name: 'Story-G1-3',
+                        targetRange: 'selected',
+                        targetClass: '2A',
+                        targetStudents: ['3', '00'],
+                        translationMode: 'hidden',
+                        sentences: [
+                            { english: "Hello, Shrimp! Let's swim together.", chinese:'' },
+                            { english: 'The water is nice today.', chinese:'' },
+                            { english: 'I am very hungry now.', chinese:'' },
+                            { english: 'There is no food here.', chinese:'' },
+                            { english: 'Look! I see food over there.', chinese:'' }
+                        ]
+                    },
+                    {
+                        id: 'topic_' + Date.now(),
+                        name: 'Story-G1-4',
+                        targetRange: 'selected',
+                        targetClass: '2A',
+                        targetStudents: ['4', '00'],
+                        translationMode: 'hidden',
+                        sentences: [
+                            { english: "Hi, Milkfish! Yes! Let's go!", chinese:'' },
+                            { english: 'Yes, I like swimming with you.', chinese:'' },
+                            { english: 'Me too. I want food.', chinese:'' },
+                            { english: "Let's keep looking.", chinese:'' },
+                            { english: "Great! Let's eat together!", chinese:'' }
+                        ]
+                    },
+                    {
+                        id: 'topic_' + Date.now(),
+                        name: 'Story-G2-1',
+                        targetRange: 'selected',
+                        targetClass: '2A',
+                        targetStudents: ['1', '00'],
+                        translationMode: 'hidden',
+                        sentences: [
+                            { english: "Milkfish and Oyster meet at the beach.", chinese:'' },
+                            { english: 'They start playing.', chinese:'' },
+                            { english: 'Suddenly, it starts to rain.', chinese:'' },
+                            { english: "They rain gets heavier.", chinese:'' },
+                            { english: "They find a big umbrella.", chinese:'' }
+                        ]
+                    },
+                    {
+                        id: 'topic_' + Date.now(),
+                        name: 'Story-G2-8',
+                        targetRange: 'selected',
+                        targetClass: '2A',
+                        targetStudents: ['8', '00'],
+                        translationMode: 'hidden',
+                        sentences: [
+                            { english: "Hi, Oyster! Let's play on the beach.", chinese:'' },
+                            { english: 'I like playing here.', chinese:'' },
+                            { english: 'Oh no! It is raining!', chinese:'' },
+                            { english: "I am very cold now.", chinese:'' },
+                            { english: "Wow! We are safe here.", chinese:'' }
+                        ]
+                    },
+                    {
+                        id: 'topic_' + Date.now(),
+                        name: 'Story-G2-2',
+                        targetRange: 'selected',
+                        targetClass: '2A',
+                        targetStudents: ['2', '00'],
+                        translationMode: 'hidden',
+                        sentences: [
+                            { english: "Hi, Milkfish! Yes! Let's go!", chinese:'' },
+                            { english: 'Me too. It is fun.', chinese:'' },
+                            { english: 'We need a place to stay dry.', chinese:'' },
+                            { english: "Let's find an umbrella", chinese:'' },
+                            { english: "We are warm and dry now.", chinese:'' }
+                        ]
+                    },
+                    {
+                        id: 'topic_' + Date.now(),
+                        name: 'Story-G3-9',
+                        targetRange: 'selected',
+                        targetClass: '2A',
+                        targetStudents: ['9', '00'],
+                        translationMode: 'hidden',
+                        sentences: [
+                            { english: "Milkfish and Clam go to the beach.", chinese:'' },
+                            { english: 'They run and play.', chinese:'' },
+                            { english: 'They go too far and got lost.', chinese:'' },
+                            { english: "They try to stay calm.", chinese:'' },
+                            { english: "They find their way home.", chinese:'' }
+                        ]
+                    },
+                    {
+                        id: 'topic_' + Date.now(),
+                        name: 'Story-G3-6',
+                        targetRange: 'selected',
+                        targetClass: '2A',
+                        targetStudents: ['6', '00'],
+                        translationMode: 'hidden',
+                        sentences: [
+                            { english: "Hi, Clam! Yes! Let's play together!", chinese:'' },
+                            { english: 'This game is very fun.', chinese:'' },
+                            { english: "Oh no! I don't know this place. ", chinese:'' },
+                            { english: "Let's think.", chinese:'' },
+                            { english: "Look! I see our home!", chinese:'' }
+                        ]
+                    },
+                    {
+                        id: 'topic_' + Date.now(),
+                        name: 'Story-G3-7',
+                        targetRange: 'selected',
+                        targetClass: '2A',
+                        targetStudents: ['7', '00'],
+                        translationMode: 'hidden',
+                        sentences: [
+                            { english: "Hi, Milkfish! Yes! Let's play!", chinese:'' },
+                            { english: 'Yes, I like it too!', chinese:'' },
+                            { english: 'I think we are lost', chinese:'' },
+                            { english: "Don't be scared.", chinese:'' },
+                            { english: "Great! Let's eat together!", chinese:'' }
+                        ]
+                    },
+                ];
+                saveData();
+            }
+        }
+
+        // SPEECH RECOGNITION SETUP
+        function requestMicPermission() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(stream => {
+                        initSpeechAPI();
+                        stream.getTracks().forEach(track => track.stop()); // Stop immediately
+                        const badge = document.getElementById('mic-status-badge');
+                        badge.className = "px-3 py-1 rounded-full text-[10px] font-magic border transition-all duration-300 bg-emerald-950/50 text-emerald-400 border-emerald-500/30";
+                        badge.innerHTML = '<i class="fa-solid fa-microphone mr-1"></i> Mic Online / 麥克風已啟動';
+                    })
+                    .catch(err => {
+                        console.error('Mic permission denied', err);
+                        document.getElementById('splash-mic-status').innerHTML = `<i class="fa-solid fa-circle-exclamation text-base"></i><span>Mic Denied / 麥克風被拒絕 (${err.message})</span>`;
+                    });
+            } else {
+                alert("Your browser does not support audio recording. Please use modern Chrome/Edge.");
+            }
+        }
+
+        function initSpeechAPI() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.lang = 'en-US';
+                recognition.interimResults = true; 
+                
+                recognition.onstart = () => {
+                    state.isRecording = true;
+                    document.getElementById('speak-icon').innerHTML = '<i class="fa-solid fa-stop text-red-500 animate-pulse text-2xl"></i>';
+                    document.getElementById('speak-label').innerText = 'Stop Chanting / 停止';
+                    document.getElementById('live-speech-transcription').innerHTML = '<span class="text-yellow-400 italic font-magic text-[11px] self-center">Listening to your spell...</span>';
+                    
+                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                            mediaRecorder = new MediaRecorder(stream);
+                            mediaRecorder.ondataavailable = e => { audioChunks.push(e.data); };
+                            mediaRecorder.onstop = () => {
+                                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                                state.recordedAudio[state.currentSentenceIndex] = audioBlob;
+                                
+                                const playBtn = document.getElementById('btn-play-recording');
+                                playBtn.disabled = false;
+                                playBtn.classList.remove('cursor-not-allowed', 'bg-purple-950', 'text-purple-600', 'border-purple-900/30');
+                                playBtn.classList.add('bg-purple-800', 'text-yellow-300', 'hover:bg-purple-700', 'border-purple-500/50', 'shadow');
+                                
+                                checkTopicCompletion();
+                            };
+                            audioChunks = [];
+                            mediaRecorder.start();
+                        }).catch(err => console.error("Mic access denied mid-flight", err));
+                    }
+                };
+
+                recognition.onresult = (event) => {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript;
+                        else interimTranscript += event.results[i][0].transcript;
+                    }
+                    
+                    const displayDiv = document.getElementById('live-speech-transcription');
+                    if (finalTranscript) {
+                        displayDiv.innerHTML = `<span class="text-white text-lg font-practice">${finalTranscript}</span>`;
+                        evaluateSpeech(finalTranscript);
+                    } else {
+                        displayDiv.innerHTML = `<span class="text-slate-400 text-lg font-practice">${interimTranscript}</span>`;
+                    }
+                };
+
+                recognition.onend = () => {
+                    state.isRecording = false;
+                    document.getElementById('speak-icon').innerHTML = '<i class="fa-solid fa-microphone animate-magic-float"></i>';
+                    document.getElementById('speak-label').innerText = '🎤 Chant Spell / 吟唱';
+                    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                        mediaRecorder.stop();
+                        mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                    }
+                };
+                
+                recognition.onerror = (event) => {
+                    document.getElementById('live-speech-transcription').innerHTML = `<span class="text-red-400 text-[11px] font-magic">Speech recognition stopped. Try again!</span>`;
+                    stopRecordingUI();
+                };
+
+                document.getElementById('splash-mic-status').innerHTML = '<i class="fa-solid fa-check-circle text-base text-green-400"></i><span class="text-green-400">Microphone Ready / 麥克風已就緒</span>';
+                document.getElementById('btn-enter-lab').disabled = false;
+                document.getElementById('btn-enter-lab').classList.remove('bg-slate-800', 'text-slate-500', 'cursor-not-allowed');
+                document.getElementById('btn-enter-lab').classList.add('bg-indigo-600', 'text-white', 'hover:bg-indigo-500', 'shadow-lg', 'shadow-indigo-500/30');
+
+            } else {
+                document.getElementById('splash-mic-status').innerHTML = '<i class="fa-solid fa-triangle-exclamation text-base text-yellow-400"></i><span class="text-yellow-400">Browser not supported / 瀏覽器不支援</span>';
+                document.getElementById('btn-enter-lab').disabled = false;
+                document.getElementById('btn-enter-lab').classList.remove('bg-slate-800', 'text-slate-500', 'cursor-not-allowed');
+                document.getElementById('btn-enter-lab').classList.add('bg-indigo-600', 'text-white', 'hover:bg-indigo-500');
+            }
+        }
+
+        function stopRecordingUI() {
+            state.isRecording = false;
+            document.getElementById('speak-icon').innerHTML = '<i class="fa-solid fa-microphone animate-magic-float"></i>';
+            document.getElementById('speak-label').innerText = '🎤 Chant Spell / 吟唱';
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        function transitionTo(screenId) {
+            const screens = ['screen-splash', 'screen-class-select', 'screen-student-select', 'screen-dashboard', 'screen-practice'];
+            screens.forEach(id => document.getElementById(id).classList.add('hidden'));
+            document.getElementById(screenId).classList.remove('hidden');
+            
+            const userContainer = document.getElementById('user-display-container');
+            const teacherBtn = document.getElementById('header-btn-teacher-panel');
+            
+            if (screenId === 'screen-splash') {
+                userContainer.classList.add('hidden');
+                teacherBtn.classList.add('hidden');
+            } else if (screenId === 'screen-class-select') {
+                userContainer.classList.add('hidden');
+                teacherBtn.classList.remove('hidden');
+            } else {
+                userContainer.classList.remove('hidden');
+                teacherBtn.classList.add('hidden');
+            }
+        }
+
+        function navigateToClassSelect() {
+            state.currentStudent = null;
+            state.currentClass = null;
+            transitionTo('screen-class-select');
+        }
+
+        function selectClass(className) {
+            state.currentClass = className;
+            transitionTo('screen-student-select');
+            renderStudents();
+        }
+
+        function renderStudents(filterText = '') {
+            const grid = document.getElementById('students-grid');
+            grid.innerHTML = '';
+            
+            let filtered = state.students.filter(s => s.class === state.currentClass);
+            if (filterText) {
+                filtered = filtered.filter(s => s.name.toLowerCase().includes(filterText.toLowerCase()) || s.id.toString().includes(filterText));
+            }
+            filtered.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+
+            filtered.forEach(student => {
+                const div = document.createElement('div');
+                div.className = 'bg-slate-900 border border-purple-500/30 rounded-xl p-3 text-center cursor-pointer hover:bg-purple-900 transition-colors shadow-md transform hover:-translate-y-1';
+                div.onclick = () => selectStudent(student);
+                div.innerHTML = `
+                    <div class="w-10 h-10 mx-auto bg-gradient-to-tr from-yellow-400 to-amber-600 rounded-full flex items-center justify-center text-white font-bold text-sm mb-2 shadow-inner shadow-amber-200/50">
+                        ${student.id}
+                    </div>
+                    <p class="font-magic text-white text-sm truncate">${student.name}</p>
+                `;
+                grid.appendChild(div);
+            });
+            
+            if(filtered.length === 0) grid.innerHTML = '<div class="col-span-full text-center text-purple-400 font-magic text-sm py-4">No wizards found. / 找不到精靈。</div>';
+        }
+
+        function filterStudents() { renderStudents(document.getElementById('student-search').value); }
+
+        function selectStudent(student) {
+            state.currentStudent = student;
+            document.getElementById('current-user-text').innerText = `${student.class} - ${student.name}`;
+            document.getElementById('dashboard-student-name').innerText = student.name;
+            document.getElementById('dashboard-student-class').innerText = `Class ${student.class}`;
+            transitionTo('screen-dashboard');
+            
+            // Reset active topic state
+            state.currentTopic = null;
+            document.getElementById('active-topic-title').innerText = "Topic: Not Selected";
+            document.getElementById('sentence-scroll-list').innerHTML = '<p class="text-xs text-slate-500 font-magic mt-4">Select a topic from the left panel.</p>';
+            
+            renderTopicsList();
+            updateDashboardProgress();
+        }
+
+        function renderTopicsList() {
+            const list = document.getElementById('topics-selection-list');
+            list.innerHTML = '';
+            
+            const availableTopics = state.topics.filter(t => {
+                if (t.targetRange === 'school') return true;
+                if (t.targetRange === 'class' && t.targetClass === state.currentStudent.class) return true;
+                if (t.targetRange === 'selected' && t.targetStudents.includes(state.currentStudent.id.toString())) return true;
+                return false;
+            });
+
+            availableTopics.forEach((topic) => {
+                const div = document.createElement('div');
+                div.className = 'bg-purple-950/40 hover:bg-purple-900/60 p-3 rounded-lg border border-purple-500/20 cursor-pointer transition-all flex items-center gap-3';
+                div.onclick = () => selectTopic(topic);
+                
+                const total = topic.sentences.length;
+                div.innerHTML = `
+                    <div class="text-xl text-yellow-400 w-8 text-center"><i class="fa-solid fa-book-sparkles"></i></div>
+                    <div class="flex-grow">
+                        <h5 class="text-sm font-magic text-white leading-tight">${topic.name}</h5>
+                        <p class="text-[9px] text-purple-300 font-magic mt-0.5">${total} Spells / ${total} 句魔法咒語</p>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+            
+            if (availableTopics.length === 0) list.innerHTML = '<div class="text-center text-purple-400 font-magic text-xs py-4">No topics assigned.</div>';
+        }
+
+        function selectTopic(topic) {
+            state.currentTopic = topic;
+            document.getElementById('active-topic-title').innerText = topic.name;
+            state.recordedAudio = {};
+            state.sentenceScores = {};
+            
+            // Check reports for existing scores to populate mastery
+            const studentReports = state.reports.filter(r => r.studentId === state.currentStudent.id && r.topic === topic.name);
+            studentReports.forEach(r => {
+                const sIdx = topic.sentences.findIndex(s => s.english === r.sentence);
+                if(sIdx !== -1) {
+                    if (!state.sentenceScores[sIdx] || r.score > state.sentenceScores[sIdx]) {
+                        state.sentenceScores[sIdx] = r.score;
+                    }
+                }
+            });
+
+            updateDashboardProgress();
+            renderSentencesList();
+        }
+
+        function renderSentencesList() {
+            const list = document.getElementById('sentence-scroll-list');
+            list.innerHTML = '';
+            if (!state.currentTopic) return;
+
+            state.currentTopic.sentences.forEach((s, idx) => {
+                const div = document.createElement('div');
+                const score = state.sentenceScores[idx] !== undefined ? state.sentenceScores[idx] : null;
+                
+                let statusBadge = `<span class="px-2 py-0.5 rounded text-[8px] font-magic bg-slate-800 text-slate-400 border border-slate-600">Pending</span>`;
+                if (score !== null) {
+                    if (score >= 80) statusBadge = `<span class="px-2 py-0.5 rounded text-[8px] font-magic bg-emerald-900/60 text-emerald-400 border border-emerald-500/30">Excellent (${score}%)</span>`;
+                    else if (score >= 60) statusBadge = `<span class="px-2 py-0.5 rounded text-[8px] font-magic bg-yellow-900/60 text-yellow-400 border border-yellow-500/30">Good (${score}%)</span>`;
+                    else statusBadge = `<span class="px-2 py-0.5 rounded text-[8px] font-magic bg-amber-900/60 text-amber-400 border border-amber-500/30">Try Again (${score}%)</span>`;
+                }
+
+                div.className = 'bg-slate-900/60 p-2.5 rounded-lg border border-slate-800 flex justify-between items-center gap-3 group';
+                div.innerHTML = `
+                    <div class="flex-grow min-w-0">
+                        <p class="text-xs font-practice text-slate-200 truncate">${idx + 1}. ${s.english}</p>
+                        <p class="text-[9px] font-magic text-slate-500 truncate mt-0.5">${s.chinese}</p>
+                    </div>
+                    <div class="flex flex-col items-end gap-1 flex-shrink-0">
+                        ${statusBadge}
+                        <button onclick="enterPracticeRoom(${idx})" class="text-[9px] bg-indigo-600 hover:bg-indigo-500 text-white px-2 py-0.5 rounded flex items-center gap-1 transition-colors shadow">
+                            Practice <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+            checkTopicCompletion();
+        }
+
+        function enterPracticeRoom(sentenceIndex) {
+            state.currentSentenceIndex = sentenceIndex;
+            transitionTo('screen-practice');
+            renderCurrentSentence();
+        }
+
+        function returnToDashboard() {
+            if(state.isRecording) stopRecordingUI();
+            transitionTo('screen-dashboard');
+            renderSentencesList();
+        }
+
+        function renderCurrentSentence() {
+            const s = state.currentTopic.sentences[state.currentSentenceIndex];
+            document.getElementById('practice-index-label').innerText = `Spell ${state.currentSentenceIndex + 1} of ${state.currentTopic.sentences.length}`;
+            document.getElementById('target-sentence-text').innerText = s.english;
+            document.getElementById('target-sentence-translation').innerText = s.chinese;
+            
+            const transMode = state.currentTopic.translationMode;
+            const transSec = document.getElementById('translation-section');
+            const transText = document.getElementById('target-sentence-translation');
+            const toggleBtn = document.getElementById('btn-toggle-translation');
+            
+            if (transMode === 'english-only') {
+                transSec.classList.add('hidden');
+                toggleBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                toggleBtn.disabled = true;
+            } else {
+                transSec.classList.remove('hidden');
+                toggleBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                toggleBtn.disabled = false;
+                if (transMode === 'auto') transText.classList.remove('hidden');
+                else transText.classList.add('hidden');
+            }
+
+            document.getElementById('live-speech-transcription').innerHTML = '<span class="text-purple-400 italic font-magic text-[11px] self-center">Press the microphone below and speak! <br>請點擊下方按鈕並開始說話！</span>';
+            document.getElementById('practice-result-card').classList.add('hidden');
+            
+            const hasAudio = state.recordedAudio[state.currentSentenceIndex] !== undefined;
+            const playBtn = document.getElementById('btn-play-recording');
+            if (hasAudio) {
+                playBtn.disabled = false;
+                playBtn.classList.remove('cursor-not-allowed', 'bg-purple-950', 'text-purple-600', 'border-purple-900/30');
+                playBtn.classList.add('bg-purple-800', 'text-yellow-300', 'hover:bg-purple-700', 'border-purple-500/50');
+            } else {
+                playBtn.disabled = true;
+                playBtn.classList.add('cursor-not-allowed', 'bg-purple-950', 'text-purple-600', 'border-purple-900/30');
+                playBtn.classList.remove('bg-purple-800', 'text-yellow-300', 'hover:bg-purple-700', 'border-purple-500/50');
+            }
+            
+            updatePracticeBadge();
+        }
+
+        function toggleTranslationVisibility() {
+            const transText = document.getElementById('target-sentence-translation');
+            if (transText.classList.contains('hidden')) transText.classList.remove('hidden');
+            else transText.classList.add('hidden');
+        }
+
+        function navigateSentence(dir) {
+            if(state.isRecording) stopRecordingUI();
+            const newIdx = state.currentSentenceIndex + dir;
+            if (newIdx >= 0 && newIdx < state.currentTopic.sentences.length) {
+                state.currentSentenceIndex = newIdx;
+                renderCurrentSentence();
+            }
+        }
+
+        function playTTS() {
+            const text = document.getElementById('target-sentence-text').innerText;
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85; // slightly slower for learners
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Text-to-Speech not supported in this browser.");
+            }
+        }
+
+        function toggleSpeechRecognition() {
+            if (state.isRecording) {
+                if (recognition) recognition.stop();
+            } else {
+                if (recognition) {
+                    try { recognition.start(); } 
+                    catch(e) { recognition.stop(); setTimeout(() => recognition.start(), 500); }
+                } else {
+                    alert("Speech recognition API is disconnected.");
+                }
+            }
+        }
+
+        function playbackUserRecording() {
+            const blob = state.recordedAudio[state.currentSentenceIndex];
+            if (blob) {
+                const audioUrl = URL.createObjectURL(blob);
+                const audio = new Audio(audioUrl);
+                audio.play();
+            }
+        }
+
+        function evaluateSpeech(spokenText) {
+            const targetText = document.getElementById('target-sentence-text').innerText;
+            const cleanSpoken = spokenText.toLowerCase().replace(/[^\w\s]/gi, '').split(' ').filter(w => w);
+            const cleanTarget = targetText.toLowerCase().replace(/[^\w\s]/gi, '').split(' ').filter(w => w);
+            
+            let matchCount = 0;
+            cleanTarget.forEach(word => {
+                if (cleanSpoken.includes(word)) {
+                    matchCount++;
+                    cleanSpoken.splice(cleanSpoken.indexOf(word), 1); 
+                }
+            });
+            
+            let score = cleanTarget.length > 0 ? Math.round((matchCount / cleanTarget.length) * 100) : 0;
+            // Provide a minimum bump if they attempted it and got a few words
+            if(matchCount > 0 && score < 20) score = 20; 
+
+            const prevScore = state.sentenceScores[state.currentSentenceIndex] || 0;
+            if (score > prevScore) state.sentenceScores[state.currentSentenceIndex] = score;
+            
+            const card = document.getElementById('practice-result-card');
+            const visual = document.getElementById('practice-result-visual');
+            const scoreText = document.getElementById('practice-result-score');
+            const msgText = document.getElementById('practice-result-message');
+            
+            card.classList.remove('hidden');
+            scoreText.innerText = `Spell Score: ${score}% / 魔法評分: ${score}%`;
+            
+            if (score >= 80) {
+                visual.innerHTML = '<i class="fa-solid fa-crown text-yellow-300"></i>';
+                card.className = "bg-purple-950/95 p-4 rounded-xl border-2 border-yellow-400 flex flex-row items-center justify-between gap-6 animate-star-twinkle mt-4 shadow-lg";
+                msgText.innerText = "Perfect Pronunciation Mastery! / 發音非常完美！";
+            } else if (score >= 60) {
+                visual.innerHTML = '<i class="fa-solid fa-thumbs-up text-emerald-400"></i>';
+                card.className = "bg-emerald-950/95 p-4 rounded-xl border-2 border-emerald-400 flex flex-row items-center justify-between gap-6 mt-4 shadow-lg";
+                msgText.innerText = "Good job! Keep practicing! / 做得好！繼續保持！";
+            } else {
+                visual.innerHTML = '<i class="fa-solid fa-bolt text-amber-400"></i>';
+                card.className = "bg-amber-950/95 p-4 rounded-xl border-2 border-amber-400 flex flex-row items-center justify-between gap-6 mt-4 shadow-lg";
+                msgText.innerText = "Needs more magic power. Try again! / 需要更多魔力，再試一次！";
+            }
+            
+            updatePracticeBadge();
+            updateDashboardProgress();
+        }
+
+        function updatePracticeBadge() {
+            const score = state.sentenceScores[state.currentSentenceIndex];
+            const badge = document.getElementById('practice-sentence-badge');
+            if (score !== undefined) {
+                badge.innerText = `Highest Score: ${score}%`;
+                badge.className = "px-3 py-1 rounded-full text-[10px] font-magic bg-indigo-900 border border-indigo-500 text-indigo-200";
+            } else {
+                badge.innerText = "Not Started";
+                badge.className = "px-3 py-1 rounded-full text-[10px] font-magic bg-gray-900 border border-gray-700 text-gray-400";
+            }
+        }
+
+        function updateDashboardProgress() {
+            if(!state.currentTopic) return;
+            const total = state.currentTopic.sentences.length;
+            let attempted = Object.keys(state.sentenceScores).length;
+            const percentage = total > 0 ? Math.round((attempted / total) * 100) : 0;
+            
+            const fill = document.getElementById('dashboard-progress-fill');
+            const text = document.getElementById('dashboard-progress-percentage');
+            if(fill && text) {
+                fill.style.width = `${percentage}%`;
+                text.innerText = `${percentage}%`;
+            }
+        }
+
+        function checkTopicCompletion() {
+            if(!state.currentTopic) return;
+            const total = state.currentTopic.sentences.length;
+            const hasScores = Object.keys(state.sentenceScores).length;
+            // Note: In Safari/iOS sometimes MediaRecorder fails, so we rely on scores to unlock
+            
+            const btn = document.getElementById('btn-topic-compile-upload');
+            const desc = document.getElementById('compilation-status-desc');
+            const banner = document.getElementById('topic-comprehensive-upload-banner');
+            
+            if (total > 0 && hasScores === total) {
+                btn.disabled = false;
+                btn.classList.remove('bg-slate-800', 'text-slate-500', 'cursor-not-allowed');
+                btn.classList.add('bg-gradient-to-r', 'from-yellow-500', 'to-amber-500', 'text-purple-950', 'hover:from-yellow-400', 'hover:to-amber-400', 'shadow-lg');
+                desc.innerText = "Chest unlocked! Ready to upload. / 寶箱已解鎖！準備上傳。";
+                desc.classList.remove('text-purple-300');
+                desc.classList.add('text-yellow-200');
+                banner.classList.add('animate-pulse');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('bg-slate-800', 'text-slate-500', 'cursor-not-allowed');
+                btn.classList.remove('bg-gradient-to-r', 'from-yellow-500', 'to-amber-500', 'text-purple-950', 'hover:from-yellow-400', 'hover:to-amber-400', 'shadow-lg');
+                desc.innerText = `Please pass all spells to unlock (${hasScores}/${total}) / 完成本單元所有咒語才能開啟`;
+                desc.classList.add('text-purple-300');
+                desc.classList.remove('text-yellow-200');
+                banner.classList.remove('animate-pulse');
+            }
+        }
+
+        function handleConsolidatedUpload() {
+            const btn = document.getElementById('btn-topic-compile-upload');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
+            btn.disabled = true;
+            
+            // Simulate Upload process
+            setTimeout(() => {
+                const timestamp = new Date().toLocaleString();
+                
+                state.currentTopic.sentences.forEach((s, idx) => {
+                    state.reports.push({
+                        date: timestamp,
+                        studentId: state.currentStudent.id,
+                        studentName: state.currentStudent.name,
+                        class: state.currentStudent.class,
+                        topic: state.currentTopic.name,
+                        sentence: s.english,
+                        score: state.sentenceScores[idx] || 0
+                    });
+                });
+                
+                // Recalculate student average
+                const student = state.students.find(s => s.id === state.currentStudent.id && s.class === state.currentStudent.class);
+                if(student) {
+                    const allScores = state.reports.filter(r => r.studentId === student.id).map(r => r.score);
+                    if(allScores.length > 0) student.avgScore = Math.round(allScores.reduce((a,b)=>a+b, 0) / allScores.length);
+                    student.stars += state.currentTopic.sentences.length; // reward stars
+                }
+                
+                saveData();
+                
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Uploaded! / 已上傳';
+                btn.classList.remove('from-yellow-500', 'to-amber-500');
+                btn.classList.add('from-emerald-500', 'to-teal-500');
+                
+                setTimeout(() => {
+                    alert("Magic spells successfully stored in the cloud grimoire! / 魔法咒語已成功儲存至雲端魔導書！");
+                    navigateToClassSelect();
+                }, 1200);
+            }, 1500);
+        }
+
+        function openPinModal() { document.getElementById('modal-teacher-pin').classList.remove('hidden'); }
+        function closePinModal() { 
+            document.getElementById('modal-teacher-pin').classList.add('hidden'); 
+            document.getElementById('pin-input').value = '';
+        }
+        function verifyTeacherPin() {
+            const pin = document.getElementById('pin-input').value;
+            if (pin === state.teacherPin) {
+                closePinModal();
+                document.getElementById('panel-teacher-dashboard').classList.remove('hidden');
+                refreshTeacherPanel();
+            } else {
+                alert("Incorrect PIN! / 密碼錯誤！");
+            }
+        }
+        function exitTeacherPanel() { document.getElementById('panel-teacher-dashboard').classList.add('hidden'); }
+
+        function switchTeacherTab(tabId) {
+            document.querySelectorAll('.teacher-tab-view').forEach(t => t.classList.add('hidden'));
+            document.querySelectorAll('.teacher-tab-btn').forEach(b => {
+                b.classList.remove('active', 'bg-indigo-950', 'border-l-4', 'border-yellow-400', 'text-yellow-300');
+                b.classList.add('text-slate-300');
+            });
+            
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeBtn = Array.from(document.querySelectorAll('.teacher-tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+            if(activeBtn) {
+                activeBtn.classList.add('active', 'bg-indigo-950', 'border-l-4', 'border-yellow-400', 'text-yellow-300');
+                activeBtn.classList.remove('text-slate-300');
+            }
+        }
+
+        function refreshTeacherPanel() {
+            renderTeacherStudents();
+            renderActiveTopics();
+            renderReports();
+        }
+
+        function filterTeacherClass(cls) {
+            state.teacherClassFilter = cls;
+            document.querySelectorAll('.class-filter-btn').forEach(b => {
+                b.classList.remove('active', 'bg-indigo-950', 'border-indigo-500/30', 'text-white');
+                b.classList.add('text-slate-400');
+            });
+            const activeBtn = Array.from(document.querySelectorAll('.class-filter-btn')).find(b => b.innerText.includes(cls === 'ALL' ? 'All' : cls));
+            if(activeBtn) {
+                activeBtn.classList.add('active', 'bg-indigo-950', 'border-indigo-500/30', 'text-white');
+                activeBtn.classList.remove('text-slate-400');
+            }
+            renderTeacherStudents();
+        }
+
+        function renderTeacherStudents() {
+            const tbody = document.getElementById('teacher-students-tbody');
+            tbody.innerHTML = '';
+            
+            let students = state.students;
+            if (state.teacherClassFilter !== 'ALL') {
+                students = students.filter(s => s.class === state.teacherClassFilter);
+            }
+            
+            students.sort((a, b) => {
+                if(a.class === b.class) return parseInt(a.id) - parseInt(b.id);
+                return a.class.localeCompare(b.class);
+            });
+
+            students.forEach(s => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-800/50';
+                tr.innerHTML = `
+                    <td class="px-3 py-2 text-white">${s.id}</td>
+                    <td class="px-3 py-2 font-bold text-yellow-300">${s.name}</td>
+                    <td class="px-3 py-2 text-slate-300">${s.class}</td>
+                    <td class="px-3 py-2 text-slate-300"><i class="fa-solid fa-star text-yellow-500 text-[10px]"></i> ${s.stars}</td>
+                    <td class="px-3 py-2 text-slate-300">${s.avgScore}%</td>
+                    <td class="px-3 py-2 text-center">
+                        <button onclick="deleteStudent('${s.class}', '${s.id}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteStudent(cls, id) {
+            if(confirm("Are you sure you want to banish this wizard? / 確定要刪除此學生嗎？")) {
+                state.students = state.students.filter(s => !(s.class === cls && s.id === id));
+                saveData();
+                renderTeacherStudents();
+            }
+        }
+
+        function openAddStudentModal() { document.getElementById('modal-add-student').classList.remove('hidden'); }
+        function closeAddStudentModal() { document.getElementById('modal-add-student').classList.add('hidden'); }
+        function addSingleStudent() {
+            const cls = document.getElementById('new-student-class').value;
+            const id = document.getElementById('new-student-id').value;
+            const name = document.getElementById('new-student-name').value;
+            
+            if(id && name) {
+                state.students.push({ class: cls, id: id, name: name, stars: 0, avgScore: 0 });
+                saveData();
+                closeAddStudentModal();
+                renderTeacherStudents();
+            } else {
+                alert("Please fill all fields.");
+            }
+        }
+
+        function openBatchStudentModal() { document.getElementById('modal-batch-student').classList.remove('hidden'); }
+        function closeBatchStudentModal() { document.getElementById('modal-batch-student').classList.add('hidden'); }
+        function processBatchStudents() {
+            const data = document.getElementById('batch-student-data').value;
+            const lines = data.split('\n');
+            let added = 0;
+            lines.forEach(line => {
+                const parts = line.split(',');
+                if(parts.length === 3) {
+                    const cls = parts[0].trim().toUpperCase();
+                    const id = parts[1].trim();
+                    const name = parts[2].trim();
+                    if(cls && id && name) {
+                        const exists = state.students.find(s => s.class === cls && s.id === id);
+                        if(!exists) {
+                            state.students.push({ class: cls, id: id, name: name, stars: 0, avgScore: 0 });
+                            added++;
+                        }
+                    }
+                }
+            });
+            saveData();
+            closeBatchStudentModal();
+            renderTeacherStudents();
+            alert(`Imported ${added} new wizards successfully.`);
+        }
+
+        function toggleAssignmentLevelOptions() {
+            const level = document.getElementById('assignment-level-select').value;
+            const classWrapper = document.getElementById('wrapper-class-select');
+            const studentWrapper = document.getElementById('wrapper-student-checklist');
+            
+            if (level === 'school') {
+                classWrapper.classList.add('hidden');
+                studentWrapper.classList.add('hidden');
+            } else if (level === 'class') {
+                classWrapper.classList.remove('hidden');
+                studentWrapper.classList.add('hidden');
+            } else if (level === 'selected') {
+                classWrapper.classList.remove('hidden');
+                studentWrapper.classList.remove('hidden');
+                refreshAssignmentTargetStudents();
+            }
+        }
+
+        function refreshAssignmentTargetStudents() {
+            const cls = document.getElementById('assignment-class-select').value;
+            const container = document.getElementById('assignment-student-list-container');
+            container.innerHTML = '';
+            
+            const classStudents = state.students.filter(s => s.class === cls);
+            classStudents.forEach(s => {
+                const lbl = document.createElement('label');
+                lbl.className = 'flex items-center gap-2 text-[10px] text-slate-300 font-magic cursor-pointer';
+                lbl.innerHTML = `
+                    <input type="checkbox" value="${s.id}" class="target-student-cb form-checkbox h-3 w-3 text-indigo-600 bg-slate-800 border-slate-700 rounded focus:ring-offset-slate-900 focus:ring-indigo-600">
+                    ${s.id} ${s.name}
+                `;
+                container.appendChild(lbl);
+            });
+        }
+
+        function aiMagicTranslateInput() {
+            const engText = document.getElementById('assignment-text-sentences').value;
+            if(!engText) return;
+            
+            const lines = engText.split('\n').filter(l => l.trim() !== '');
+            const transLines = lines.map(l => {
+                const lower = l.toLowerCase();
+                if(lower.includes('hello')) return '你好。';
+                if(lower.includes('morning')) return '早安。';
+                if(lower.includes('name')) return '我的名字是...';
+                if(lower.includes('swim')) return '我會游泳。';
+                if(lower.includes('friend')) return '她是我的朋友。';
+                if(lower.includes('bus')) return '我們搭公車上學。';
+                return '（系統無法辨識，請手動輸入翻譯）';
+            });
+            
+            document.getElementById('assignment-text-translations').value = transLines.join('\n');
+        }
+
+        function previewFormedSentences() {
+            const eng = document.getElementById('assignment-text-sentences').value.split('\n').filter(l => l.trim() !== '');
+            const chi = document.getElementById('assignment-text-translations').value.split('\n').filter(l => l.trim() !== '');
+            
+            if(eng.length === 0) { alert("Please enter English sentences."); return; }
+            
+            let previewStr = "Preview Configuration:\n\n";
+            for(let i=0; i<eng.length; i++) {
+                previewStr += `${i+1}. ${eng[i]}\n   ${chi[i] || '(No translation provided)'}\n\n`;
+            }
+            alert(previewStr);
+        }
+
+        function saveSentenceAssignment() {
+            const level = document.getElementById('assignment-level-select').value;
+            const cls = document.getElementById('assignment-class-select').value;
+            const topicName = document.getElementById('assignment-topic-name').value || `Topic ${new Date().toLocaleDateString()}`;
+            const eng = document.getElementById('assignment-text-sentences').value.split('\n').filter(l => l.trim() !== '');
+            const chi = document.getElementById('assignment-text-translations').value.split('\n');
+            const transMode = document.querySelector('input[name="translation-mode"]:checked').value;
+            
+            let targetStudents = [];
+            if (level === 'selected') {
+                document.querySelectorAll('.target-student-cb:checked').forEach(cb => targetStudents.push(cb.value));
+                if(targetStudents.length === 0) { alert("Please select at least one student!"); return; }
+            }
+
+            if(eng.length === 0) { alert("A topic requires at least 1 sentence!"); return; }
+
+            const sentences = eng.map((e, idx) => ({
+                english: e.trim(),
+                chinese: (chi[idx] || '').trim()
+            }));
+
+            const newTopic = {
+                id: 'topic_' + Date.now(),
+                name: topicName,
+                targetRange: level,
+                targetClass: level === 'school' ? 'ALL' : cls,
+                targetStudents: targetStudents,
+                translationMode: transMode,
+                sentences: sentences
+            };
+
+            state.topics.push(newTopic);
+            saveData();
+            
+            document.getElementById('assignment-text-sentences').value = '';
+            document.getElementById('assignment-text-translations').value = '';
+            document.getElementById('assignment-topic-name').value = '';
+            
+            renderActiveTopics();
+            alert("Topic Spells Successfully Deployed! / 主題咒語派發成功！");
+        }
+
+        function renderActiveTopics() {
+            const container = document.getElementById('active-assignments-registry');
+            container.innerHTML = '';
+            
+            state.topics.forEach((t, index) => {
+                const div = document.createElement('div');
+                div.className = 'bg-slate-900 border border-slate-800 p-3 rounded-lg flex justify-between items-center gap-4';
+                
+                let targetText = t.targetRange === 'school' ? 'School-wide / 全校' : 
+                                 t.targetRange === 'class' ? `Class ${t.targetClass} / 全班` : 
+                                 `Class ${t.targetClass} Selected / 指定學生`;
+
+                div.innerHTML = `
+                    <div>
+                        <h5 class="text-sm font-magic text-white">${t.name}</h5>
+                        <p class="text-[10px] text-slate-400 font-magic">
+                            <span class="text-indigo-400 mr-2"><i class="fa-solid fa-users"></i> ${targetText}</span>
+                            <span><i class="fa-solid fa-layer-group"></i> ${t.sentences.length} Spells</span>
+                        </p>
+                    </div>
+                    <button onclick="deleteTopic(${index})" class="text-red-400 hover:text-red-300 text-xs font-magic bg-slate-950 px-2 py-1 rounded border border-red-900/50 transition-colors">
+                        <i class="fa-solid fa-trash"></i> Revoke / 撤回
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+            
+            if(state.topics.length === 0) container.innerHTML = '<p class="text-xs text-slate-500 font-magic text-center py-2">No active topics found.</p>';
+        }
+
+        function deleteTopic(index) {
+            if(confirm("Are you sure? This revokes the topic for all assigned students.")) {
+                state.topics.splice(index, 1);
+                saveData();
+                renderActiveTopics();
+            }
+        }
+
+        function saveCloudSettings() { alert("Settings saved locally. / 設定已儲存於本機。"); }
+        function testIntegrationConnection() { alert("Simulated connection successful. / 連線模擬成功，目前採本機運行。"); }
+
+        function renderReports() {
+            const tbody = document.getElementById('reports-tbody');
+            tbody.innerHTML = '';
+            
+            const filterCls = document.getElementById('report-class-filter').value;
+            let filteredReports = state.reports;
+            
+            if (filterCls !== 'ALL') filteredReports = filteredReports.filter(r => r.class === filterCls);
+            
+            // Render latest first
+            [...filteredReports].reverse().forEach(r => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-800/50';
+                tr.innerHTML = `
+                    <td class="px-3 py-2 text-slate-400 whitespace-nowrap">${r.date.split(',')[0]}</td>
+                    <td class="px-3 py-2 font-bold text-indigo-300">${r.class} - ${r.studentName}</td>
+                    <td class="px-3 py-2 text-slate-300">${r.topic}</td>
+                    <td class="px-3 py-2 text-slate-300 truncate max-w-[200px]" title="${r.sentence}">${r.sentence}</td>
+                    <td class="px-3 py-2 font-bold ${r.score >= 80 ? 'text-emerald-400' : r.score >= 60 ? 'text-yellow-400' : 'text-amber-400'}">${r.score}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            if(filteredReports.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-slate-500 font-magic">No report data found. Please complete a topic chest first.</td></tr>';
+            }
+        }
+    </script>
+</body>
+</html>

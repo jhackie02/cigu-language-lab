@@ -18,7 +18,7 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     
     <!-- Babel for in-browser JSX transpilation -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.24.4/babel.min.js"></script>
 
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -54,7 +54,7 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        
+
         .glass-panel {
             background: rgba(18, 15, 38, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -110,7 +110,7 @@
 <body>
     <div id="root"></div>
 
-    <script type="text/babel">
+    <script type="text/babel" data-type="module">
         const { useState, useEffect, useRef } = React;
 
         // ==========================================================
@@ -131,7 +131,7 @@
             6: [{id: '01', name: 'Ben'}, {id: '02', name: 'Tim'}, {id: '03', name: 'Shawn'}, {id: '04', name: 'Nick'}, {id: '05', name: 'Alex'}, {id: '06', name: 'Tim'}, {id: '07', name: 'Tom'}, {id: '08', name: 'Andy'}, {id: '09', name: 'Jack'}, {id: '10', name: 'Jake'}, {id: '11', name: 'Alan'}, {id: '12', name: 'Alan'}, {id: '13', name: 'Kevin'}, {id: '14', name: 'Tim'}, {id: '15', name: 'Jim'}, {id: '16', name: 'Danny'}, {id: '17', name: 'Helen'}, {id: '18', name: 'Kara'}, {id: '19', name: 'Lily'}, {id: '20', name: 'Stacy'}, {id: '21', name: 'Tina'}, {id: '22', name: 'Tina'}, {id: '23', name: 'Emily'}, {id: '24', name: 'Bella'}, {id: '25', name: 'Kelly'}, {id: '26', name: 'Wendy'}, {id: '27', name: 'Mia'}, {id: '00', name: 'Sample'}]
         };
 
-        const ASSIGNED_TOPICS = [
+     const ASSIGNED_TOPICS = [
             {
                 id: 'topic_001',
                 name: 'Daily Greetings / 常見問候語',
